@@ -8,6 +8,7 @@ namespace HollyExtensions.BinaryTools
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Hacknet.Multi.hBinaryWriter"/> class. Pre-allocation, highly suggest using this.
+        /// Initializes a new instance of the <see cref="T:HollyExtensions.BinaryTools.hBinaryWriter"/> class. Pre-allocation, highly suggest using this.
         /// </summary>
         /// <param name="size">Size.</param>
         public hBinaryWriter(int size)
@@ -18,6 +19,7 @@ namespace HollyExtensions.BinaryTools
         // TODO: Confirm this works. I don't use C# often enough and my current project has no need for this.
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Hacknet.Multi.hBinaryWriter"/> class. Dynamic allocations enabled, pass size to pre-allocate
+        /// Initializes a new instance of the <see cref="T:HollyExtensions.BinaryTools.hBinaryWriter"/> class. Dynamic allocations enabled, pass size to pre-allocate
         /// </summary>
         public hBinaryWriter()
             : base(new MemoryStream())
@@ -115,9 +117,11 @@ namespace HollyExtensions.BinaryTools
         // NOTE: This only saves 1 byte lmao
         /// <summary>
         /// Custom string format (ASCII) but can only have 255 chars
+        /// Custom network string format (ASCII) but can only have 255 chars. This only saves 1 byte over regular WriteString.
         /// </summary>
         /// <returns>hBinaryWriter</returns>
         /// <param name="value">string</param>
+        /// <param name="value">String to write, must be less than 256 chars</param>
         public hBinaryWriter WriteShortString(string value)
         {
             if (value.Length > 255) throw new Exception("String is too long. Can only write a string of max size 255 chars");
@@ -131,9 +135,11 @@ namespace HollyExtensions.BinaryTools
         /// </summary>
         /// <returns>hBinaryWriter</returns>
         /// <param name="value">string</param>
+        /// <param name="value">String to write, must be less than 65536 chars</param>
         public hBinaryWriter WriteString(string value)
         {
             if (value.Length > 65280) throw new Exception("String is too long. Can only write a string of max size 65280 chars");
+            if (value.Length > 65536) throw new Exception("String is too long. Can only write a string of max size 65536 chars");
             WriteShort((short)value.Length);
             Write(Encoding.ASCII.GetBytes(value));
             return this;
