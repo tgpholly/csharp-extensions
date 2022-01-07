@@ -4,6 +4,7 @@ using System.IO;
 
 namespace HollyExtensions.BinaryTools
 {
+    // This class is an extension of BinaryReader that adds some custom readers for custom writers added in hBinaryWriter
     public class hBinaryReader : BinaryReader
     {
         public hBinaryReader(Stream s)
@@ -11,6 +12,10 @@ namespace HollyExtensions.BinaryTools
         {
         }
 
+        /// <summary>
+        /// Reads a packed float. A very packed format that allows for decimals between 0 and 1 to be crushed into a single unsigned byte. Has roughly 1-2 decimal(s) of precision.
+        /// </summary>
+        /// <returns>The unpacked float.</returns>
         public float ReadPackedFloat()
         {
             float packedFloat = ReadByte() / 255f;
@@ -18,6 +23,10 @@ namespace HollyExtensions.BinaryTools
             return (float)Math.Round(packedFloat * 100f) / 100f;
         }
 
+        /// <summary>
+        /// Custom network string format (ASCII) but can only have 255 chars
+        /// </summary>
+        /// <returns>The decoded short string.</returns>
         public string ReadShortString()
         {
             byte stringLength = ReadByte();
@@ -25,6 +34,10 @@ namespace HollyExtensions.BinaryTools
             return Encoding.ASCII.GetString(ReadBytes(stringLength));
         }
 
+        /// <summary>
+        /// Custom network string format (ASCII)
+        /// </summary>
+        /// <returns>The decoded string.</returns>
         public override string ReadString()
         {
             short stringLength = ReadInt16();

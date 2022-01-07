@@ -4,23 +4,22 @@ using System.Text;
 
 namespace HollyExtensions.BinaryTools
 {
+    // This class is mostly just explicit versions of BinaryWriter.Write with a few custom implementations of things
     public class hBinaryWriter : BinaryWriter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Hacknet.Multi.hBinaryWriter"/> class. Pre-allocation, highly suggest using this.
         /// Initializes a new instance of the <see cref="T:HollyExtensions.BinaryTools.hBinaryWriter"/> class. Pre-allocation, highly suggest using this.
         /// </summary>
-        /// <param name="size">Size.</param>
+        /// <param name="size">Size of the created <see cref="T:System.IO.BinaryWriter"/> buffer</param>
         public hBinaryWriter(int size)
             : base(new MemoryStream(size))
         {
         }
 
-        // TODO: Confirm this works. I don't use C# often enough and my current project has no need for this.
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Hacknet.Multi.hBinaryWriter"/> class. Dynamic allocations enabled, pass size to pre-allocate
         /// Initializes a new instance of the <see cref="T:HollyExtensions.BinaryTools.hBinaryWriter"/> class. Dynamic allocations enabled, pass size to pre-allocate
         /// </summary>
+        /// <remarks>Need to confirm this works. I don't use C# often enough and my current project has no need for this.</remarks>
         public hBinaryWriter()
             : base(new MemoryStream())
         {
@@ -39,7 +38,7 @@ namespace HollyExtensions.BinaryTools
         /// Explicit byte writing
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">byte</param>
+        /// <param name="value">Byte to write to be buffer</param>
         public hBinaryWriter WriteByte(byte value)
         {
             Write(value);
@@ -50,7 +49,7 @@ namespace HollyExtensions.BinaryTools
         /// Explicit short writing
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">short</param>
+        /// <param name="value">Short to write to be buffer</param>
         public hBinaryWriter WriteShort(short value)
         {
             Write(value);
@@ -61,7 +60,7 @@ namespace HollyExtensions.BinaryTools
         /// Explicit int writing
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">int</param>
+        /// <param name="value">Int to write to be buffer</param>
         public hBinaryWriter WriteInt(int value)
         {
             Write(value);
@@ -72,7 +71,7 @@ namespace HollyExtensions.BinaryTools
         /// Explicit long writing
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">long</param>
+        /// <param name="value">Long to write to be buffer</param>
         public hBinaryWriter WriteLong(long value)
         {
             Write(value);
@@ -82,8 +81,8 @@ namespace HollyExtensions.BinaryTools
         /// <summary>
         /// Writes a packed float. A very packed format that allows for decimals between 0 and 1 to be crushed into a single unsigned byte. Has roughly 1-2 decimal(s) of precision.
         /// </summary>
-        /// <returns>The packed float.</returns>
-        /// <param name="value">Value.</param>
+        /// <returns>hBinaryWriter</returns>
+        /// <param name="value">Float you want to pack into a byte, must be between 0 and 1</param>
         public hBinaryWriter WritePackedFloat(float value)
         {
             if (value < 0 || value > 1) throw new Exception("WritePackedFloat only supports values between 0 and 1");
@@ -96,7 +95,7 @@ namespace HollyExtensions.BinaryTools
         /// Explicit float writing
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">float</param>
+        /// <param name="value">Float to write to the buffer</param>
         public hBinaryWriter WriteFloat(float value)
         {
             Write(value);
@@ -107,20 +106,17 @@ namespace HollyExtensions.BinaryTools
         /// Explicit double writing
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">double</param>
+        /// <param name="value">Double to write to the buffer</param>
         public hBinaryWriter WriteDouble(double value)
         {
             Write(value);
             return this;
         }
 
-        // NOTE: This only saves 1 byte lmao
         /// <summary>
-        /// Custom string format (ASCII) but can only have 255 chars
         /// Custom network string format (ASCII) but can only have 255 chars. This only saves 1 byte over regular WriteString.
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">string</param>
         /// <param name="value">String to write, must be less than 256 chars</param>
         public hBinaryWriter WriteShortString(string value)
         {
@@ -131,14 +127,12 @@ namespace HollyExtensions.BinaryTools
         }
 
         /// <summary>
-        /// Custom string format (ASCII)
+        /// Custom network string format (ASCII)
         /// </summary>
         /// <returns>hBinaryWriter</returns>
-        /// <param name="value">string</param>
         /// <param name="value">String to write, must be less than 65536 chars</param>
         public hBinaryWriter WriteString(string value)
         {
-            if (value.Length > 65280) throw new Exception("String is too long. Can only write a string of max size 65280 chars");
             if (value.Length > 65536) throw new Exception("String is too long. Can only write a string of max size 65536 chars");
             WriteShort((short)value.Length);
             Write(Encoding.ASCII.GetBytes(value));
