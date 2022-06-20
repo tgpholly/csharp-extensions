@@ -23,15 +23,15 @@ namespace HollyExtensions.BinaryTools
 			return (float)Math.Round(packedFloat * 100f) / 100f;
 		}
 
-        /// <summary>
-        /// Reads a float from the BinaryReader
-        /// </summary>
-        /// <note>This is the same as BinaryReader.ReadSingle but this is easier to remember</note>
-        /// <returns>The read float</returns>
-        public float ReadFloat()
-        {
-            return ReadSingle();
-        }
+		/// <summary>
+		/// Reads a float from the BinaryReader
+		/// </summary>
+		/// <note>This is the same as BinaryReader.ReadSingle but this is easier to remember</note>
+		/// <returns>The read float</returns>
+		public float ReadFloat()
+		{
+			return ReadSingle();
+		}
 
 		/// <summary>
 		/// Custom network string format (ASCII) but can only have 255 chars
