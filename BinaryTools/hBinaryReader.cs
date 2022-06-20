@@ -28,7 +28,7 @@ namespace HollyExtensions.BinaryTools
         /// </summary>
         /// <note>This is the same as BinaryReader.ReadSingle but this is easier to remember</note>
         /// <returns>The read float</returns>
-        public ReadFloat()
+        public float ReadFloat()
         {
             return ReadSingle();
         }
