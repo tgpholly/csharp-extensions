@@ -7,8 +7,8 @@ namespace HollyExtensions.BinaryTools
 	// This class is an extension of BinaryReader that adds some custom readers for custom writers added in hBinaryWriter
 	public class hBinaryReader : BinaryReader
 	{
-		public hBinaryReader(Stream s)
-			: base(s)
+		public hBinaryReader(Stream stream)
+			: base(stream)
 		{
 		}
 
