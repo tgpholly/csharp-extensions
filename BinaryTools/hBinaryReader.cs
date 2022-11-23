@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Runtime.CompilerServices; 
 
 namespace HollyExtensions.BinaryTools
 {
@@ -28,6 +29,7 @@ namespace HollyExtensions.BinaryTools
 		/// </summary>
 		/// <note>This is the same as BinaryReader.ReadSingle but this is easier to remember</note>
 		/// <returns>The read float</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public float ReadFloat()
 		{
 			return ReadSingle();
